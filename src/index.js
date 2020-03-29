@@ -51,6 +51,8 @@ export function batchedSubscribe(batch) {
     const subscribeImmediate = store.subscribe;
 
     function dispatch(...dispatchArgs) {
+      const action = dispatchArgs[0].action.type;
+      console.log('action', action);
       const res = store.dispatch(...dispatchArgs);
       notifyListenersBatched();
       return res;
