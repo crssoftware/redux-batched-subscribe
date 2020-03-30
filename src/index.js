@@ -1,4 +1,4 @@
-export function batchedSubscribe(batch) {
+export function batchedSubscribe(batch, actionsToExclude = []) {
   if (typeof batch !== 'function') {
     throw new Error('Expected batch to be a function.');
   }
@@ -51,10 +51,15 @@ export function batchedSubscribe(batch) {
     const subscribeImmediate = store.subscribe;
 
     function dispatch(...dispatchArgs) {
-      const action = dispatchArgs[0].action.type;
-      console.log('action', action);
+      const action = dispatchArgs[0];
+
       const res = store.dispatch(...dispatchArgs);
-      notifyListenersBatched();
+
+      if (actionsToExclude.includes(action)) {
+        notifyListeners();
+      } else {
+        notifyListenersBatched();
+      }
       return res;
     }
 
