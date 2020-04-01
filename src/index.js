@@ -1,7 +1,12 @@
-export function batchedSubscribe(batch, actionsToExclude = []) {
+function allDebounceAsDefault() {
+  return true;
+}
+
+export function batchedSubscribe(batch, shouldDebounce) {
   if (typeof batch !== 'function') {
     throw new Error('Expected batch to be a function.');
   }
+  const shouldDebounceFn = shouldDebounce || allDebounceAsDefault;
 
   let currentListeners = [];
   let nextListeners = currentListeners;
@@ -55,10 +60,11 @@ export function batchedSubscribe(batch, actionsToExclude = []) {
 
       const res = store.dispatch(...dispatchArgs);
 
-      if (actionsToExclude.includes(action)) {
-        notifyListeners();
-      } else {
+      if (shouldDebounceFn(action)) {
+        console.log('debounce ', action && action.type);
         notifyListenersBatched();
+      } else {
+        notifyListeners();
       }
       return res;
     }
