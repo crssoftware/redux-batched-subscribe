@@ -4,7 +4,8 @@ import expect from 'expect';
 function createStoreShape() {
   return {
     dispatch: expect.createSpy(),
-    subscribe: expect.createSpy()
+    subscribe: expect.createSpy(),
+    getState: expect.createSpy()
   };
 }
 

@@ -60,7 +60,7 @@ export function batchedSubscribe(batch, shouldDebounce) {
 
       const res = store.dispatch(...dispatchArgs);
 
-      if (shouldDebounceFn(action)) {
+      if (shouldDebounceFn(action, store.getState())) {
         console.log('debounce ', action && action.type);
         notifyListenersBatched();
       } else {
