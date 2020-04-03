@@ -64,6 +64,7 @@ export function batchedSubscribe(batch, shouldDebounce) {
         console.log('debounce ', action && action.type);
         notifyListenersBatched();
       } else {
+        console.log('not debounce ', action && action.type);
         notifyListeners();
       }
       return res;
